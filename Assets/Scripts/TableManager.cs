@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class TableManager : MonoBehaviour {
 
-    public float fillSpeed = 0.1f; // Velocidad de llenado por segundo
+    public float fillSpeed = 0.2f; // Velocidad de llenado por segundo
     public Image image; // Referencia a la imagen que quieres llenar
 
     private float currentFill = 0f; // Valor actual de llenado
