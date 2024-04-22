@@ -27,6 +27,8 @@ public class Cat : MonoBehaviour
 
     public Volume volume;
     private Vignette vignette;
+    Bloom bloom;
+
     public Color blackColor = Color.black; // Color para cuando colorIndex sea 0
     public Color pinkColor = Color.magenta; // Color para cuando colorIndex sea 1
 
@@ -37,7 +39,7 @@ public class Cat : MonoBehaviour
     private void Start() {
         StartCoroutine(Timer());
         //volume = GetComponent<Volume>();
-
+        volume.profile.TryGet(out bloom);
     }
     private void Update() {
 
@@ -61,9 +63,21 @@ public class Cat : MonoBehaviour
 
         // Verifica si el llenado ha alcanzado 1
         if (currentFill <= 0) {
-            SceneManager.LoadScene("Menu");
+            if (volume.profile.TryGet(out Bloom _bloom))
+            {
+                bloom = _bloom;
+                StartCoroutine(CambioEscena());
+            }
+            
             // Puedes añadir aquí cualquier otra acción que quieras realizar cuando el llenado esté completo
         }
+    }
+
+    IEnumerator CambioEscena()
+    {
+        bloom.intensity.value = Mathf.Lerp(bloom.intensity.value, 100000f, Time.deltaTime);
+        yield return new WaitForSeconds(1);
+        SceneManager.LoadScene("Final");
     }
 
     IEnumerator Timer() {
