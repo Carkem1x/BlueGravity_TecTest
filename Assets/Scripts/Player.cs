@@ -35,6 +35,12 @@ public class Player : MonoBehaviour
 
     Vector2 movement;
 
+    //[Header("Canvas Settings")]
+    public static bool isChile;
+    public static bool isPastel;
+    public static bool isSushi;
+    public static bool isWithObj;
+
     #endregion
     private void Start()
         {
@@ -48,10 +54,10 @@ public class Player : MonoBehaviour
     
     private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.I))
-            {
-                Canvas_Inventory.SetActive(true);
-            }
+            //if (Input.GetKeyDown(KeyCode.I))
+            //{
+            //    Canvas_Inventory.SetActive(true);
+            //}
 
             movement.x = Input.GetAxisRaw("Horizontal");
             movement.y = Input.GetAxisRaw("Vertical");
@@ -96,6 +102,16 @@ public class Player : MonoBehaviour
                 break;
         }
     }
+
+    //public void prenderCHile() {
+    //    Chile.SetActive(true);
+    //}
+    //public void prenderPastel() {
+    //    Pastel.SetActive(true);
+    //}
+    //public void prenderShushi() {
+    //    Sushi.SetActive(true);
+    //}
 
     #region OnTriggerRegion
 

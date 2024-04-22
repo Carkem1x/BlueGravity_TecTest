@@ -229,6 +229,27 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: Time & weather_6
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 270
+        width: 48
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 647a9040d9efe364eb1c9fb62da4bcee
+      internalID: 1323086951
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -243,6 +264,7 @@ TextureImporter:
       Time & weather_4: 1544847825
       Time & weather_1: -1181627542
       Time & weather_0: 1088469826
+      Time & weather_6: 1323086951
       Time & weather_3: -157696246
       Time & weather_2: 1629769606
       Time & weather_5: -1100416516
