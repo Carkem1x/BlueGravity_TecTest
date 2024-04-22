@@ -8,7 +8,7 @@ public class TableManager : MonoBehaviour {
     public float fillSpeed = 0.2f; // Velocidad de llenado por segundo
     public Image image; // Referencia a la imagen que quieres llenar
 
-    private float currentFill = 0f; // Valor actual de llenado
+    private float currentFill = 1f; // Valor actual de llenado
     public Platillo m_platillo;
 
     // Start is called before the first frame update

@@ -1,19 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.AI;
 using UnityEngine.UI;
+using Cinemachine;
+using UnityEditor.Rendering;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
+using UnityEngine.SceneManagement;
 
 public class Cat : MonoBehaviour
 {
+    public CinemachineVirtualCamera VirtualCamera;
+    public float shakeIntensity;
 
     public GameObject Pastel;
     public GameObject Chile;
     public GameObject Sushi;
 
     public float timer;
-    NavMeshAgent agent;
 
     public float fillSpeed = 0.1f; // Velocidad de llenado por segundo
     public Image image; // Referencia a la imagen que quieres llenar
@@ -21,14 +25,31 @@ public class Cat : MonoBehaviour
 
     public Transform m_player;
 
+    public Volume volume;
+    private Vignette vignette;
+    public Color blackColor = Color.black; // Color para cuando colorIndex sea 0
+    public Color pinkColor = Color.magenta; // Color para cuando colorIndex sea 1
+
+    public GameObject bueno;
+    public GameObject malo;
+
+
     private void Start() {
         StartCoroutine(Timer());
-        agent = GetComponent<NavMeshAgent>();
-
+        //volume = GetComponent<Volume>();
 
     }
     private void Update() {
-        agent.SetDestination(m_player.position);
+
+        if (volume.profile.TryGet(out Vignette _vignette)) {
+            vignette = _vignette;
+
+            // Calcular el color intermedio usando la función Lerp
+            Color interpolatedColor = Color.Lerp(blackColor, pinkColor, currentFill);
+
+            // Asignar el color intermedio al Vignette
+            vignette.color.value = interpolatedColor;
+        }
 
         currentFill -= fillSpeed * Time.deltaTime;
 
@@ -40,7 +61,7 @@ public class Cat : MonoBehaviour
 
         // Verifica si el llenado ha alcanzado 1
         if (currentFill <= 0) {
-            Debug.Log("¡Se acabo!");
+            SceneManager.LoadScene("Menu");
             // Puedes añadir aquí cualquier otra acción que quieras realizar cuando el llenado esté completo
         }
     }
@@ -79,6 +100,7 @@ public class Cat : MonoBehaviour
                 Player.isChile = false;
                 Player.isWithObj = false;
                 currentFill += 0.5f;
+                StartCoroutine(Cambio(bueno));
                 //timer = 0;
             }
             else if (Player.isPastel && Pastel.activeSelf) {
@@ -87,6 +109,7 @@ public class Cat : MonoBehaviour
                 Player.isPastel = false;
                 Player.isWithObj = false;
                 currentFill += 0.5f;
+                StartCoroutine(Cambio(bueno));
                 //timer = 0;
             } else if (Player.isSushi && Sushi.activeSelf) {
                 print("Es sushi y te salvaste");
@@ -94,6 +117,7 @@ public class Cat : MonoBehaviour
                 Player.isSushi = false;
                 Player.isWithObj = false;
                 currentFill += 0.5f;
+                StartCoroutine(Cambio(bueno));
                 //timer = 0;
             } else {
                 print("Ya valio");
@@ -104,9 +128,23 @@ public class Cat : MonoBehaviour
                 Player.isPastel = false;
                 Player.isChile = false;
                 Player.isWithObj = false;
+                StartCoroutine(Cambio(malo));
+                StartCoroutine(ShakeCam());
                 //timer = 0;
             }
         }
     }
 
+    IEnumerator Cambio(GameObject g) {
+        g.SetActive(true);
+        yield return new WaitForSeconds(1);
+        g.SetActive(false);
+    }
+
+    IEnumerator ShakeCam() {
+        CinemachineBasicMultiChannelPerlin _cbmcp = VirtualCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
+        _cbmcp.m_AmplitudeGain = shakeIntensity;
+        yield return new WaitForSeconds(0.5f);
+        _cbmcp.m_AmplitudeGain = 0;
+    }
 }
